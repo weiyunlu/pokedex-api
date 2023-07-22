@@ -23,8 +23,8 @@ class Pokemon < ApplicationRecord
             sp_atk: sp_atk,
             sp_def: sp_def,
             speed: speed,
-            generation: 1,
-            legendary: false
+            generation: generation,
+            legendary: legendary
         }
     end
 end
