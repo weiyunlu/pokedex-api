@@ -3,6 +3,12 @@ class Pokemon < ApplicationRecord
         :speed, :generation, presence: true
     validates_uniqueness_of :pokedex_id, scope: :form_id
     validates_uniqueness_of :name
+    
+    VALID_TYPES = %w[Normal Fire Water Grass Electric Ice Fighting Poison Ground Flying Psychic Bug
+                     Rock Ghost Dark Dragon Steel Fairy]
+
+    validates :type1, inclusion: VALID_TYPES
+    validates :type2, inclusion: VALID_TYPES, allow_blank: true
 
     def total
         (hp || 0) + (attack || 0) + (defense || 0) + (sp_atk || 0) + (sp_def || 0) + (speed || 0)

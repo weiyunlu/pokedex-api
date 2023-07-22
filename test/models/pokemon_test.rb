@@ -11,8 +11,8 @@ class PokemonTest < ActiveSupport::TestCase
   end
 
   test 'is valid without type2' do
-    pokemon = Pokemon.new(pokedex_id: 1, name: 'Bulbasaur', type1: 'Grass', 
-      hp: 45, attack: 49, defense: 49, sp_atk: 65, sp_def: 65, speed: 45, generation: 1, legendary: false)
+    pokemon = Pokemon.new(pokedex_id: 25, name: 'Pikachu', type1: 'Electric', 
+      hp: 35, attack: 55, defense: 40, sp_atk: 50, sp_def: 50, speed: 90, generation: 1, legendary: false)
     assert pokemon.valid?
   end
 
@@ -71,6 +71,20 @@ class PokemonTest < ActiveSupport::TestCase
     end
   end
 
+  test 'is invalid with an invalid type1' do
+    pokemon = Pokemon.new(pokedex_id: 9001, form_id: 0, name: 'Goku', type1: 'Saiyan', type2: 'Fighting', 
+      hp: 120, attack: 120, defense: 120, sp_atk: 120, sp_def: 120, speed: 120, generation: 20, legendary: true)
+
+    refute pokemon.valid?
+  end
+
+  test 'is invalid with an invalid type2' do
+    pokemon = Pokemon.new(pokedex_id: 9002, form_id: 0, name: 'Beerus', type1: 'Fighting', type2: 'God', 
+      hp: 120, attack: 120, defense: 120, sp_atk: 120, sp_def: 120, speed: 120, generation: 20, legendary: true)
+
+    refute pokemon.valid?
+  end
+
   # total
 
   test 'total computes the total stats' do
@@ -83,8 +97,8 @@ class PokemonTest < ActiveSupport::TestCase
   # entity
 
   test 'entity returns a json without the database id and with the computed total stat' do
-    pokemon = Pokemon.create(pokedex_id: 1, name: 'Bulbasaur', type1: 'Grass', type2: 'Poison', 
-      hp: 45, attack: 49, defense: 49, sp_atk: 65, sp_def: 65, speed: 45, generation: 1, legendary: false)
+    pokemon = Pokemon.create(pokedex_id: 249, name: 'Lugia', type1: 'Psychic', type2: 'Flying', 
+      hp: 106, attack: 90, defense: 130, sp_atk: 90, sp_def: 154, speed: 110, generation: 2, legendary: true)
 
     expected_entity = {
       pokedex_id: pokemon.pokedex_id,
