@@ -13,8 +13,7 @@ end
 
     # some pokemon have multiple forms with same pokedex_id in the CSV file
     # we will disambiguate by incrementing form_id in this case
-    existing_pkmn = Pokemon.find_by(pokedex_id: pkmn[0])
-    if existing_pkmn
+    if Pokemon.find_by(pokedex_id: pkmn[0])
         form_id = Pokemon.last.form_id + 1
     else
         form_id = 0
