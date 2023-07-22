@@ -21,22 +21,7 @@ class Api::PokemonController < ApplicationController
 
     def create
         form_id = pokemon_params[:form_id] || 0
-
-        @pokemon = Pokemon.new(
-            pokedex_id: pokemon_params[:pokedex_id],
-            form_id: form_id,
-            name: pokemon_params[:name],
-            type1: pokemon_params[:type1],
-            type2: pokemon_params[:type2],
-            hp: pokemon_params[:hp],
-            attack: pokemon_params[:attack],
-            defense: pokemon_params[:defense],
-            sp_atk: pokemon_params[:sp_atk],
-            sp_def: pokemon_params[:sp_def],
-            speed: pokemon_params[:speed],
-            generation: pokemon_params[:generation],
-            legendary: pokemon_params[:legendary]
-        )
+        @pokemon = Pokemon.new(pokemon_params.merge({form_id: form_id}))
 
         if @pokemon.save
             render json: @pokemon.entity, status: 201
@@ -50,21 +35,7 @@ class Api::PokemonController < ApplicationController
         @pokemon = Pokemon.find_by(pokedex_id: params[:id], form_id: form_id)
 
         if @pokemon
-            if @pokemon.update(
-                pokedex_id: pokemon_params[:pokedex_id] || @pokemon.pokedex_id,
-                form_id: pokemon_params[:form_id] || @pokemon.form_id,
-                name: pokemon_params[:name] || @pokemon.name,
-                type1: pokemon_params[:type1] || @pokemon.type1,
-                type2: pokemon_params[:type2] || @pokemon.type2,
-                hp: pokemon_params[:hp] || @pokemon.hp,
-                attack: pokemon_params[:attack] || @pokemon.attack,
-                defense: pokemon_params[:defense] || @pokemon.defense,
-                sp_atk: pokemon_params[:sp_atk] || @pokemon.sp_atk,
-                sp_def: pokemon_params[:sp_def] || @pokemon.sp_def,
-                speed: pokemon_params[:speed] || @pokemon.speed,
-                generation: pokemon_params[:generation] || @pokemon.generation,
-                legendary: pokemon_params[:legendary] || @pokemon.legendary
-            )
+            if @pokemon.update(pokemon_params)
                 render json: @pokemon.entity
             else
                 render json: "Errors updating pokemon with pokedex_id #{params[:id]}, form_id #{form_id}: #{@pokemon.errors.details}",
