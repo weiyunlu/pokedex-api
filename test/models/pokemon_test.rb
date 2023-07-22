@@ -48,7 +48,7 @@ class PokemonTest < ActiveSupport::TestCase
     refute pokemon.valid?
   end
 
-  test 'is valid when alternate form has same pokedex_id and different form_id differs by a letter' do
+  test 'is valid when alternate form has same pokedex_id and different form_id' do
     Pokemon.create(pokedex_id: 3, form_id: 0, name: 'Venusaur', type1: 'Grass', type2: 'Poison', 
       hp: 80, attack: 82, defense: 83, sp_atk: 100, sp_def: 100, speed: 80, generation: 1, legendary: false)
 
@@ -96,7 +96,7 @@ class PokemonTest < ActiveSupport::TestCase
 
   # entity
 
-  test 'entity returns a json without the database id and with the computed total stat' do
+  test 'entity returns a json without the database object id and with the computed total stat' do
     pokemon = Pokemon.create(pokedex_id: 249, name: 'Lugia', type1: 'Psychic', type2: 'Flying', 
       hp: 106, attack: 90, defense: 130, sp_atk: 90, sp_def: 154, speed: 110, generation: 2, legendary: true)
 
