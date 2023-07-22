@@ -39,7 +39,7 @@ class Api::PokemonController < ApplicationController
         )
 
         if @pokemon.save
-            render json: @pokemon, status: 201
+            render json: @pokemon.entity, status: 201
         else
             render json: "Errors creating pokemon: #{@pokemon.errors.details}", status: 400
         end
@@ -65,7 +65,7 @@ class Api::PokemonController < ApplicationController
                 generation: pokemon_params[:generation] || @pokemon.generation,
                 legendary: pokemon_params[:legendary] || @pokemon.legendary
             )
-                render json: @pokemon
+                render json: @pokemon.entity
             else
                 render json: "Errors updating pokemon with pokedex_id #{params[:id]}, form_id #{form_id}: #{@pokemon.errors.details}",
                     status: 400
