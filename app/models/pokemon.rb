@@ -14,7 +14,7 @@ class Pokemon < ApplicationRecord
         (hp || 0) + (attack || 0) + (defense || 0) + (sp_atk || 0) + (sp_def || 0) + (speed || 0)
     end
 
-    # exposed entity obscures database object id and shows computed total stat
+    # entity for APIs obscures database object id and exposes computed total stat
     def entity
         {
             pokedex_id: pokedex_id,

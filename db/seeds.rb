@@ -12,7 +12,8 @@ end
     pkmn = seeds_file[line]
 
     # some pokemon have multiple forms with same pokedex_id in the CSV file
-    # we will disambiguate by incrementing form_id in this case
+    # we will disambiguate by incrementing the form_id in this case
+    # this keeps the pair [pokedex_id, form_id] unique
     if Pokemon.find_by(pokedex_id: pkmn[0])
         form_id = Pokemon.last.form_id + 1
     else
