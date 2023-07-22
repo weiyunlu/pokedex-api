@@ -5,7 +5,7 @@ This is a Pokedex API using https://gist.github.com/armgilles/194bcff35001e7eb53
 **Some design choices**
 
 * `total` is a computed value (sum of other stats) rather than its own column in the database.
-* We use the `pokedex_id` instead of the databse object id as the `:id` parameter for API endpoints.
+* We use the `pokedex_id` instead of the database object id as the `:id` parameter for API endpoints.
 * Some pokemon have alternate forms with the same `pokedex_id`, so we differentiate with a `form_id`.  For example, Venusaur has `pokedex_id = 3, form_id = 0` and Mega Venusaur has `pokedex_id = 3, form_id = 1`.  This pair is unique.
 * The returned JSON is an entity which obscures the database object id, but exposes the computed `total` stat.
 
