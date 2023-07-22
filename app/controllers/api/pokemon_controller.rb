@@ -3,28 +3,31 @@ class Api::PokemonController < ApplicationController
         limit = params[:limit] || 10
         offset = params[:offset] || 0
 
-        @pokemon_list = Pokemon.limit(limit).offset(offset)
+        @pokemon_list = Pokemon.order(pokedex_id: :asc, form_id: :asc).limit(limit).offset(offset)
 
-        render json: @pokemon_list
+        render json: @pokemon_list.map { |pokemon| pokemon.entity }
     end
 
     def show
-        @pokemon = Pokemon.find_by(pokedex_id: params[:id])
+        form_id = params[:form_id] || 0
+        @pokemon = Pokemon.find_by(pokedex_id: params[:id], form_id: form_id)
 
         if @pokemon
-            render json: @pokemon
+            render json: @pokemon.entity
         else
-            render json: "Pokemon with pokedex_id #{params[:id]} was not found.", status: 404
+            render json: "Pokemon with pokedex_id #{params[:id]}, form_id #{form_id} was not found.", status: 404
         end
     end
 
     def create
+        form_id = pokemon_params[:form_id] || 0
+
         @pokemon = Pokemon.new(
             pokedex_id: pokemon_params[:pokedex_id],
+            form_id: form_id,
             name: pokemon_params[:name],
             type1: pokemon_params[:type1],
             type2: pokemon_params[:type2],
-            total: pokemon_params[:total],
             hp: pokemon_params[:hp],
             attack: pokemon_params[:attack],
             defense: pokemon_params[:defense],
@@ -43,15 +46,16 @@ class Api::PokemonController < ApplicationController
     end
 
     def update
-        @pokemon = Pokemon.find_by(pokedex_id: params[:id])
+        form_id = params[:form_id] || 0
+        @pokemon = Pokemon.find_by(pokedex_id: params[:id], form_id: form_id)
 
         if @pokemon
             if @pokemon.update(
                 pokedex_id: pokemon_params[:pokedex_id] || @pokemon.pokedex_id,
+                form_id: pokemon_params[:form_id] || @pokemon.form_id,
                 name: pokemon_params[:name] || @pokemon.name,
                 type1: pokemon_params[:type1] || @pokemon.type1,
                 type2: pokemon_params[:type2] || @pokemon.type2,
-                total: pokemon_params[:total] || @pokemon.total,
                 hp: pokemon_params[:hp] || @pokemon.hp,
                 attack: pokemon_params[:attack] || @pokemon.attack,
                 defense: pokemon_params[:defense] || @pokemon.defense,
@@ -63,7 +67,7 @@ class Api::PokemonController < ApplicationController
             )
                 render json: @pokemon
             else
-                render json: "Errors updating pokemon with pokedex_id #{params[:id]}: #{@pokemon.errors.details}",
+                render json: "Errors updating pokemon with pokedex_id #{params[:id]}, form_id #{form_id}: #{@pokemon.errors.details}",
                     status: 400
             end
         else
@@ -72,13 +76,14 @@ class Api::PokemonController < ApplicationController
     end
 
     def destroy
-        @pokemon = Pokemon.find_by(pokedex_id: params[:id])
+        form_id = params[:form_id] || 0
+        @pokemon = Pokemon.find_by(pokedex_id: params[:id], form_id: form_id)
 
         if @pokemon
             @pokemon.destroy
-            render json: "Pokemon with pokedex_id #{params[:id]} was deleted."
+            render json: "Pokemon with pokedex_id #{params[:id]}, form_id #{form_id} was deleted."
         else
-            render json: "Pokemon with pokedex_id #{params[:id]} was not found.", status: 404
+            render json: "Pokemon with pokedex_id #{params[:id]}, form_id #{form_id} was not found.", status: 404
         end
     end
 
@@ -87,10 +92,10 @@ class Api::PokemonController < ApplicationController
     def pokemon_params
         params.require(:pokemon).permit([
             :pokedex_id,
+            :form_id,
             :name,
             :type1,
             :type2,
-            :total,
             :hp,
             :attack,
             :defense,

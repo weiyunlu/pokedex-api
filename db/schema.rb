@@ -15,11 +15,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_21_225758) do
   enable_extension "plpgsql"
 
   create_table "pokemon", force: :cascade do |t|
-    t.string "pokedex_id", null: false
+    t.integer "pokedex_id", null: false
+    t.integer "form_id", default: 0, null: false
     t.string "name", null: false
     t.string "type1", null: false
     t.string "type2"
-    t.integer "total", null: false
     t.integer "hp", null: false
     t.integer "attack", null: false
     t.integer "defense", null: false
@@ -31,7 +31,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_21_225758) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_pokemon_on_name", unique: true
-    t.index ["pokedex_id"], name: "index_pokemon_on_pokedex_id", unique: true
+    t.index ["pokedex_id", "form_id"], name: "index_pokemon_on_pokedex_id_and_form_id", unique: true
   end
 
 end
