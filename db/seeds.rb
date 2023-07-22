@@ -13,7 +13,8 @@ end
 
     # some pokemon have multiple forms with same pokedex_id in the CSV file
     # we will disambiguate by appending letters to the pokedex_id in this case
-    if Pokemon.find_by(pokedex_id: pkmn[0])
+    existing_pkmn = Pokemon.find_by(pokedex_id: pkmn[0])
+    if existing_pkmn
         last_pokedex_id = Pokemon.last.pokedex_id
 
         # add "A" if last pokedex ID was strictly numerical; otherwise take the next letter
