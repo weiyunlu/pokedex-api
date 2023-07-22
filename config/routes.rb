@@ -1,3 +1,5 @@
 Rails.application.routes.draw do
-  resources :pokemon
+  namespace :api do
+    resources :pokemon
+  end
 end
