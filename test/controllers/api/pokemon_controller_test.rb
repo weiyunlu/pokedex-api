@@ -1,10 +1,10 @@
 require "test_helper"
 
 class Api::PokemonControllerTest < ActionDispatch::IntegrationTest
-  def pokemon_params(pokedex_id = 999, form_id = 0, name = "Missingno")
+  def pokemon_params(pokedex_id = 999, alternate_form_id = 0, name = "Missingno")
     {
       pokedex_id: pokedex_id,
-      form_id: form_id,
+      alternate_form_id: alternate_form_id,
       name: name,
       type1: 'Flying',
       type2: 'Normal',
@@ -33,7 +33,7 @@ class Api::PokemonControllerTest < ActionDispatch::IntegrationTest
 
     parsed_response = JSON.parse(response.body)
     assert_equal 10, parsed_response.size
-    assert_equal 0, parsed_response.first['form_id']
+    assert_equal 0, parsed_response.first['alternate_form_id']
   end
 
   test '#index returns limited/offset paginated list when params passed' do
@@ -43,11 +43,11 @@ class Api::PokemonControllerTest < ActionDispatch::IntegrationTest
 
     parsed_response = JSON.parse(response.body)
     assert_equal 5, parsed_response.size
-    assert_equal 10, parsed_response.first['form_id']
+    assert_equal 10, parsed_response.first['alternate_form_id']
   end
 
   # show
-  test '#show finds pokemon with default form when form_id not passed' do
+  test '#show finds pokemon with default form when alternate_form_id not passed' do
     pokemon = Pokemon.create(pokemon_params)
 
     get '/api/pokemon/999'
@@ -56,11 +56,11 @@ class Api::PokemonControllerTest < ActionDispatch::IntegrationTest
     assert_response 200
   end
 
-  test '#show finds pokemon with specified form when form_id passed' do
+  test '#show finds pokemon with specified form when alternate_form_id passed' do
     pokemon = Pokemon.create(pokemon_params)
     pokemon_alt = Pokemon.create(pokemon_params(999, 1, "MissingnoAlt"))
 
-    get '/api/pokemon/999', params: { form_id: 1 }
+    get '/api/pokemon/999', params: { alternate_form_id: 1 }
 
     assert_equal response.body, pokemon_alt.entity.to_json
     assert_response 200
@@ -105,7 +105,7 @@ class Api::PokemonControllerTest < ActionDispatch::IntegrationTest
     pokemon = Pokemon.create(pokemon_params)
     pokemon2 = Pokemon.create(pokemon_params(999, 1, 'MissingnoAlt'))
 
-    put '/api/pokemon/999', params: { form_id: 1, pokemon: { hp: 120, attack: 120 } }
+    put '/api/pokemon/999', params: { alternate_form_id: 1, pokemon: { hp: 120, attack: 120 } }
 
     pokemon.reload
     pokemon2.reload
@@ -122,7 +122,7 @@ class Api::PokemonControllerTest < ActionDispatch::IntegrationTest
     pokemon = Pokemon.create(pokemon_params)
     pokemon2 = Pokemon.create(pokemon_params(999, 1, 'MissingnoAlt'))
 
-    put '/api/pokemon/999', params: { pokemon: { form_id: 1 }}
+    put '/api/pokemon/999', params: { pokemon: { alternate_form_id: 1 }}
     assert_response 400
   end
 
@@ -139,9 +139,9 @@ class Api::PokemonControllerTest < ActionDispatch::IntegrationTest
     pokemon = Pokemon.create(pokemon_params)
     pokemon2 = Pokemon.create(pokemon_params(999, 1, 'MissingnoAlt'))
 
-    delete '/api/pokemon/999', params: { form_id: 1 }
+    delete '/api/pokemon/999', params: { alternate_form_id: 1 }
     assert_equal 1, Pokemon.count
-    assert_equal 0, Pokemon.first.form_id
+    assert_equal 0, Pokemon.first.alternate_form_id
     assert_response 200
   end
 

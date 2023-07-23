@@ -16,7 +16,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_21_225758) do
 
   create_table "pokemon", force: :cascade do |t|
     t.integer "pokedex_id", null: false
-    t.integer "form_id", default: 0, null: false
+    t.integer "alternate_form_id", default: 0, null: false
     t.string "name", null: false
     t.string "type1", null: false
     t.string "type2"
@@ -27,11 +27,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_21_225758) do
     t.integer "sp_def", null: false
     t.integer "speed", null: false
     t.integer "generation", null: false
-    t.boolean "legendary", null: false
+    t.boolean "legendary", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_pokemon_on_name", unique: true
-    t.index ["pokedex_id", "form_id"], name: "index_pokemon_on_pokedex_id_and_form_id", unique: true
+    t.index ["pokedex_id", "alternate_form_id"], name: "index_pokemon_on_pokedex_id_and_alternate_form_id", unique: true
   end
 
 end

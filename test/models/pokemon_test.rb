@@ -3,11 +3,11 @@ require "test_helper"
 class PokemonTest < ActiveSupport::TestCase
   # validations
 
-  test 'is valid with all fields, default form_id of 0' do
+  test 'is valid with all fields, default alternate_form_id of 0' do
     pokemon = Pokemon.new(pokedex_id: 1, name: 'Bulbasaur', type1: 'Grass', type2: 'Poison', 
       hp: 45, attack: 49, defense: 49, sp_atk: 65, sp_def: 65, speed: 45, generation: 1, legendary: false)
     assert pokemon.valid?
-    assert_equal 0, pokemon.form_id
+    assert_equal 0, pokemon.alternate_form_id
   end
 
   test 'is valid without type2' do
@@ -38,21 +38,21 @@ class PokemonTest < ActiveSupport::TestCase
     refute pokemon.valid?
   end
 
-  test 'is invalid when pokedex_id + form_id combination is not unique' do
-    Pokemon.create(pokedex_id: 3, form_id: 0, name: 'Venusaur', type1: 'Grass', type2: 'Poison', 
+  test 'is invalid when pokedex_id + alternate_form_id combination is not unique' do
+    Pokemon.create(pokedex_id: 3, alternate_form_id: 0, name: 'Venusaur', type1: 'Grass', type2: 'Poison', 
       hp: 80, attack: 82, defense: 83, sp_atk: 100, sp_def: 100, speed: 80, generation: 1, legendary: false)
 
-    pokemon = Pokemon.new(pokedex_id: 3, form_id: 0, name: 'VenusaurMega Venusaur', type1: 'Grass', type2: 'Poison',
+    pokemon = Pokemon.new(pokedex_id: 3, alternate_form_id: 0, name: 'VenusaurMega Venusaur', type1: 'Grass', type2: 'Poison',
       hp: 80, attack: 100, defense: 123, sp_atk: 122, sp_def: 120, speed: 80, generation: 1, legendary: false)
 
     refute pokemon.valid?
   end
 
-  test 'is valid when alternate form has same pokedex_id and different form_id' do
-    Pokemon.create(pokedex_id: 3, form_id: 0, name: 'Venusaur', type1: 'Grass', type2: 'Poison', 
+  test 'is valid when alternate form has same pokedex_id and different alternate_form_id' do
+    Pokemon.create(pokedex_id: 3, alternate_form_id: 0, name: 'Venusaur', type1: 'Grass', type2: 'Poison', 
       hp: 80, attack: 82, defense: 83, sp_atk: 100, sp_def: 100, speed: 80, generation: 1, legendary: false)
 
-    pokemon = Pokemon.new(pokedex_id: 3, form_id: 1, name: 'VenusaurMega Venusaur', type1: 'Grass', type2: 'Poison',
+    pokemon = Pokemon.new(pokedex_id: 3, alternate_form_id: 1, name: 'VenusaurMega Venusaur', type1: 'Grass', type2: 'Poison',
       hp: 80, attack: 100, defense: 123, sp_atk: 122, sp_def: 120, speed: 80, generation: 1, legendary: false)
 
     assert pokemon.valid?
@@ -72,14 +72,14 @@ class PokemonTest < ActiveSupport::TestCase
   end
 
   test 'is invalid with an invalid type1' do
-    pokemon = Pokemon.new(pokedex_id: 9001, form_id: 0, name: 'Goku', type1: 'Saiyan', type2: 'Fighting', 
+    pokemon = Pokemon.new(pokedex_id: 9001, alternate_form_id: 0, name: 'Goku', type1: 'Saiyan', type2: 'Fighting', 
       hp: 120, attack: 120, defense: 120, sp_atk: 120, sp_def: 120, speed: 120, generation: 20, legendary: true)
 
     refute pokemon.valid?
   end
 
   test 'is invalid with an invalid type2' do
-    pokemon = Pokemon.new(pokedex_id: 9002, form_id: 0, name: 'Beerus', type1: 'Fighting', type2: 'God', 
+    pokemon = Pokemon.new(pokedex_id: 9002, alternate_form_id: 0, name: 'Beerus', type1: 'Fighting', type2: 'God', 
       hp: 120, attack: 120, defense: 120, sp_atk: 120, sp_def: 120, speed: 120, generation: 20, legendary: true)
 
     refute pokemon.valid?
@@ -102,7 +102,7 @@ class PokemonTest < ActiveSupport::TestCase
 
     expected_entity = {
       pokedex_id: pokemon.pokedex_id,
-      form_id: pokemon.form_id,
+      alternate_form_id: pokemon.alternate_form_id,
       name: pokemon.name,
       type1: pokemon.type1,
       type2: pokemon.type2,
