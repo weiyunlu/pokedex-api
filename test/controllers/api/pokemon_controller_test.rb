@@ -1,7 +1,7 @@
 require "test_helper"
 
 class Api::PokemonControllerTest < ActionDispatch::IntegrationTest
-  def pokemon_params(pokedex_id = 999, alternate_form_id = 0, name = "Missingno")
+  def pokemon_params(pokedex_id = 999, alternate_form_id = 0, name = 'Missingno')
     {
       pokedex_id: pokedex_id,
       alternate_form_id: alternate_form_id,
