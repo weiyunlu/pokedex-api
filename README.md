@@ -16,8 +16,8 @@ This is a Pokédex API using https://gist.github.com/armgilles/194bcff35001e7eb5
 
 pokemon_params = `{ :pokedex_id, :alternate_form_id, :name, :type1, :type2, :hp, :attack, :defense, :sp_atk, :sp_def, :speed, :generation, :legendary }`
 
-* `get /api/pokemon` will return a paginated list of Pokémon.  Optional params `limit` and `offset` with default 10 and 0.
+* `get /api/pokemon` will return a paginated list of Pokémon.  Optional params `limit` and `offset` with default 10 and 0.  Sorted by ascending `[pokedex_id, alternate_form_id]`.
 * `get /api/pokemon/:id` will return Pokémon with `[pokedex_id, alternate_form_id]` equal to `[:id, params[:alternate_form_id]]` (with default of 0 for `params[:alternate_form_id]`).
 * `post /api/pokemon` will create a new Pokémon, with params `{ pokemon: pokemon_params }`.  All the `pokemon_params` are required except for `alternate_form_id` (default 0) and `type2` (default nil).
 * `put /api/pokemon/:id` will update the Pokémon with `[pokedex_id, alternate_form_id]` equal to `[:id, params[:alternate_form_id]]` (with default of 0 for `params[:alternate_form_id]`).  Any values provided in params `{ pokemon: pokemon_params }` will be updated, rest will be unchanged.
-* `destroy /api/pokemon/:id` will delete the Pokémon with `[pokedex_id, alternate_form_id]` equal to `[:id, params[:alternate_form_id]]` (with default of 0 for `params[:alternate_form_id]`).
+* `delete /api/pokemon/:id` will delete the Pokémon with `[pokedex_id, alternate_form_id]` equal to `[:id, params[:alternate_form_id]]` (with default of 0 for `params[:alternate_form_id]`).
