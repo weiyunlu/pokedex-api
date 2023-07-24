@@ -8,7 +8,7 @@ This is a Pokédex API using https://gist.github.com/armgilles/194bcff35001e7eb5
 * We use the `pokedex_id` instead of the database object id as the `:id` parameter for API endpoints.
 * Some pokemon have alternate forms with the same `pokedex_id`, so we differentiate with a `alternate_form_id`.  For example, Venusaur has `pokedex_id = 3, alternate_form_id = 0` and Mega Venusaur has `pokedex_id = 3, alternate_form_id = 1`.  This pair is unique.
 * The returned JSON is an entity which obscures the database object id, but exposes the computed `total` stat.
-* We validate that `type1` and `type2` (if it is present) must be one of the currently existing 18 Pokémon types.
+* We validate that `type1` and `type2` (if it is present) must be one of the currently existing 18 Pokémon types.  Note that presently this is case sensitive following convention in the seed data (must start with capital letter, followed by lower case letters - e.g. `Flying` is good, but `flying` and `FLYING` are not.).
 
 ***
 
