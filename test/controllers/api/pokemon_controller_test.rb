@@ -20,19 +20,19 @@ class Api::PokemonControllerTest < ActionDispatch::IntegrationTest
   end
 
   def create_twenty_missingnos
-    (0..39).each do |i|
+    (0..19).each do |i|
       Pokemon.create(pokemon_params(999, i, "Missingno Alt#{i}"))
     end
   end
   
   # index
-  test '#index returns paginated list with default limit of 20, offset of 0' do
+  test '#index returns paginated list with default limit of 10, offset of 0' do
     create_twenty_missingnos
 
     get '/api/pokemon'
 
     parsed_response = JSON.parse(response.body)
-    assert_equal 20, parsed_response.size
+    assert_equal 10, parsed_response.size
     assert_equal 0, parsed_response.first['alternate_form_id']
   end
 
